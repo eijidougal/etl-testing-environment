@@ -1,0 +1,43 @@
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql
+    platform: linux/amd64
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "YourStrong@Passw0rd"
+      ACCEPT_EULA: "Y"
+      MSSQL_TCP_PORT: 1433  # Explicitly set the TCP port
+      MSSQL_PID: "Express"
+
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: testdb
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+  api_server:
+    build:
+      context: ./api_server
+    container_name: api_server
+    volumes:
+      - ./scripts:/app/scripts  # Mount the local 'scripts' directory to '/app/scripts' inside the container
+    ports:
+      - "5001:5000"
+    environment:
+      FLASK_ENV: development

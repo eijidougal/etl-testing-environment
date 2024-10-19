@@ -1,0 +1,20 @@
+# Database interaction
+pyodbc
+sqlalchemy
+pymongo
+psycopg2-binary
+
+# Data handling
+pandas
+numpy
+
+# API interaction
+requests
+
+# Local API server
+Flask
+
+# Testing
+pytest
+pytest-mock
+coverage
