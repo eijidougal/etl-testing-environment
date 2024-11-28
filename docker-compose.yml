@@ -10,7 +10,9 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_TCP_PORT: 1433  # Explicitly set the TCP port
       MSSQL_PID: "Express"
-
+    volumes:
+      - ./scripts:/app/scripts
+    command: /bin/bash -c "/app/scripts/seed_mssql && /opt/mssql/bin/sqlservr"
 
   postgres:
     image: postgres:latest
@@ -21,6 +23,9 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: testdb
+    volumes:
+      - ./scripts:/app/scripts
+    command: /bin/bash -c "/app/scripts/seed_postgres && docker-entrypoint.sh postgres"
 
   mongodb:
     image: mongo:latest
@@ -30,6 +35,9 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./scripts:/app/scripts
+    command: /bin/bash -c "/app/scripts/seed_mongo && mongod"
 
   api_server:
     build:
