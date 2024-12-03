@@ -1,0 +1,2 @@
+CREATE TABLE Users (ID SERIAL PRIMARY KEY, Name TEXT);
+INSERT INTO Users (Name) VALUES ('Test User');

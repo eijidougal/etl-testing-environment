@@ -8,11 +8,9 @@ services:
     environment:
       SA_PASSWORD: "YourStrong@Passw0rd"
       ACCEPT_EULA: "Y"
-      MSSQL_TCP_PORT: 1433  # Explicitly set the TCP port
+      MSSQL_TCP_PORT: 1433
       MSSQL_PID: "Express"
-    volumes:
-      - ./scripts:/app/scripts
-    command: /bin/bash -c "/app/scripts/seed_mssql && /opt/mssql/bin/sqlservr"
+
 
   postgres:
     image: postgres:latest
@@ -24,8 +22,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: testdb
     volumes:
-      - ./scripts:/app/scripts
-    command: /bin/bash -c "/app/scripts/seed_postgres && docker-entrypoint.sh postgres"
+      - ./postgres/init-scripts:/docker-entrypoint-initdb.d
 
   mongodb:
     image: mongo:latest
@@ -36,8 +33,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
-      - ./scripts:/app/scripts
-    command: /bin/bash -c "/app/scripts/seed_mongo && mongod"
+      - ./mongodb/init-scripts:/docker-entrypoint-initdb.d
 
   api_server:
     build:
@@ -49,3 +45,6 @@ services:
       - "5001:5000"
     environment:
       FLASK_ENV: development
+  
+  
+  
